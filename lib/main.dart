@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import './search_page.dart';
+import './notes_custom_icons_icons.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,6 +11,13 @@ class MyApp extends StatelessWidget {
       title: 'Keep notes',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: TextTheme(
+          display1: TextStyle(color: Colors.grey[600]),
+          display2: TextStyle(color: Colors.grey[600]),
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.grey[600],
+        ),
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -27,7 +35,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final TextEditingController _filterNotes = new TextEditingController();
 
 // void main() {
@@ -37,114 +44,122 @@ class _MyHomePageState extends State<MyHomePage> {
 //   ));
 // }
 
-  Widget createAppBar() {
+  Widget createAppBar(BuildContext context) {
     return SizedBox(
-      height: 100.0,
-      child: Card(
-        margin: EdgeInsets.only(
-          top: 8.0,
-          bottom: 8.0,
-          left: 4.0,
-          right: 4.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        color: Colors.white,
-        elevation: 4.0,
-        // child: new Padding(
-        //   padding: EdgeInsets.only(
-        //     top: 16.0,
-        //     bottom: 16.0,
-        //   ),
-        // child: new Column(
-        //   children: <Widget>[
-        //     new Container(
-        //       height: 16.0,
-        //     ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                left: 8.0,
-                right: 4.0,
-              ),
-              child: Icon(
-                Icons.menu,
-                color: Colors.grey,
-                size: 25.0,
-              ),
-            ),
-            Flexible(
-              child: TextField(
-                controller: _filterNotes,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Search your notes",
-                  hintStyle: TextStyle(
-                    letterSpacing: 2.0,
-                    fontSize: 16.0,
+      height: 90.0,
+      child: Container(
+        padding: EdgeInsets.only(top: 25.0),
+        child: Card(
+          margin: EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+            left: 4.0,
+            right: 4.0,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          color: Colors.white,
+          elevation: 1.0,
+          child: InkWell(
+            onTap: () async {
+              var searchPage = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SearchPage(),
+                  ));
+              if (searchPage == null) {
+                searchPage = false;
+              }
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 8.0,
+                    right: 4.0,
                   ),
-                  contentPadding: EdgeInsets.only(left: 4.0, right: 4.0),
+                  child: IconButton(
+                    tooltip: "Menu",
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.menu,
+                      size: 25.0,
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 0.0,
+                    right: 85.0,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Search your notes",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16.0,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 22.0, right: 0.0),
+                  child: IconButton(
+                    padding: const EdgeInsets.all(0.0),
+                    onPressed: () {},
+                    icon: Icon(
+                      NotesCustomIcons.ic_list_view_grey700_24,
+                      size: 25.0,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 6.0, right: 0.0),
+                  child: InkWell(
+                    onTap: (){
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Tap Accounts"),));
+                    },
+                    onLongPress: (){
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Long Tap Accounts"),));
+                    },
+                    // highlightColor: Colors.black,
+                    // borderRadius: BorderRadius.circular(20.0),
+                    // customBorder: CircleBorder(side: BorderSide(color: Colors.black)),
+                    child: CircleAvatar(backgroundColor: Colors.blue,
+                    radius: 16.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 4.0, right: 4.0),
-              child: Icon(
-                Icons.grid_on,
-                color: Colors.grey,
-                size: 25.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 4.0, right: 8.0),
-              child: Icon(
-                Icons.account_circle,
-                color: Colors.grey,
-                size: 25.0,
-              ),
-            ),
-          ],
+          ),
         ),
-        //     new Container(
-        //       height: 16.0,
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    //main();
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(60.0),
-      //   child: AppBar(
-      //     elevation: 0.0,
-      //     backgroundColor: Colors.white,
-      //     title: createAppBar(),
-      //   ),
-      // ),
       body: Container(
         color: Colors.white,
         padding: EdgeInsets.only(
           left: 8.0,
           right: 8.0,
-          bottom: 8.0,
         ),
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.white,
-              //expandedHeight: 85.0,
-              floating: false,
-              snap: false,
+              backgroundColor: Colors.transparent,
+              expandedHeight: 65.0,
+              floating: true,
+              pinned: true,
+              snap: true,
               elevation: 0.0,
-              title: createAppBar(),
+              flexibleSpace: createAppBar(context),
             ),
             SliverGrid(
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -175,67 +190,66 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Transform.translate(
         offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
         child: BottomAppBar(
-          elevation: 0.0,
+          elevation: 20.0,
           child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Flexible(
-                child: TextField(
-                  controller: _filterNotes,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Take a note...",
-                    hintStyle: TextStyle(
-                      letterSpacing: 1.0,
-                      fontSize: 16.0,
+              InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 24.0,
+                    right: 115.0,
+                    top: 17.0,
+                    bottom: 17.0,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Take a note...",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        letterSpacing: 0.0,
+                        fontSize: 14.0,
+                      ),
                     ),
-                    contentPadding: EdgeInsets.only(left: 16.0, right: 4.0),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 4.0),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.check_box,
+              InkWell(
+                child: Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Icon(
+                    NotesCustomIcons.ic_check_box_grey900_alpha71_24,
                   ),
-                  color: Colors.grey,
-                  iconSize: 25.0,
-                  onPressed: () {},
                 ),
+                onTap: () {},
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 4.0),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.brush,
+              InkWell(
+                child: Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Icon(
+                    NotesCustomIcons.ic_brush_grey900_alpha71_24,
                   ),
-                  color: Colors.grey,
-                  iconSize: 25.0,
-                  onPressed: () {},
                 ),
+                onTap: () {},
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 4.0),
-                child: IconButton(
-                  icon: Icon(
+              InkWell(
+                child: Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Icon(
                     Icons.mic_none,
                   ),
-                  color: Colors.grey,
-                  iconSize: 25.0,
-                  onPressed: () {},
                 ),
+                onTap: () {},
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 4.0, right: 8.0),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.image,
+              InkWell(
+                child: Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Icon(
+                    NotesCustomIcons.ic_image_grey900_alpha71_24,
                   ),
-                  color: Colors.grey,
-                  iconSize: 25.0,
-                  onPressed: () {},
                 ),
+                onTap: () {},
               ),
             ],
           ),
